@@ -42,22 +42,20 @@ class TasksExport implements FromCollection, WithHeadings, WithMapping
     public function headings(): array
     {
         return [
-            'Nama Task',
             'Tanggal',
-            'Status',
-            'Lokasi',
-            'Catatan'
+            'Nama Tugas',
+            'Deskripsi Tugas',
+            'Status'
         ];
     }
 
     public function map($task): array
     {
         return [
-            $task->title,
             $task->date,
+            $task->title,
+            $task->description,
             $task->status,
-            $task->location,
-            $task->note,
         ];
     }
 }

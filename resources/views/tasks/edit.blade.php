@@ -35,11 +35,7 @@
                     <label>Description</label>
                     <textarea name="description" class="form-control" rows="3" required>{{ old('description', $task->description) }}</textarea>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label>Date</label>
-                    <input type="date" name="date" class="form-control" value="{{ old('date', $task->date) }}" required>
-                </div>
-                <div class="col-md-6 mb-3">
+                <div class="col-md-12 mb-3">
                     <label>Deadline</label>
                     <input type="date" name="deadline" class="form-control" value="{{ old('deadline', $task->deadline) }}">
                 </div>
@@ -59,7 +55,7 @@
                         <option value="High" {{ old('priority', $task->priority) == 'High' ? 'selected' : '' }}>High</option>
                     </select>
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-12 mb-3">
                     <label>Assign To (Engineer)</label>
                     <select name="assigned_to" class="form-control">
                         <option value="">-- Unassigned --</option>
@@ -67,10 +63,6 @@
                             <option value="{{ $en->id }}" {{ old('assigned_to', $task->assigned_to) == $en->id ? 'selected' : '' }}>{{ $en->name }}</option>
                         @endforeach
                     </select>
-                </div>
-                <div class="col-md-12 mb-3">
-                    <label>Note (Catatan)</label>
-                    <textarea name="note" class="form-control" rows="2">{{ old('note', $task->note) }}</textarea>
                 </div>
             </div>
             
