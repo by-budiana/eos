@@ -32,8 +32,14 @@
                     <input type="text" name="location" class="form-control" value="{{ old('location', $task->location) }}" required>
                 </div>
                 <div class="col-md-12 mb-3">
-                    <label>Description</label>
-                    <textarea name="description" class="form-control" rows="3" required>{{ old('description', $task->description) }}</textarea>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="mb-0">Description</label>
+                        <button type="button" class="btn btn-sm btn-info" id="btn-generate-ai">
+                            <i class="bi bi-magic"></i> Perbaiki dengan AI
+                        </button>
+                    </div>
+                    <textarea name="description" id="task-description" class="form-control" rows="4" required>{{ old('description', $task->description) }}</textarea>
+                    <small class="text-muted d-block mt-1" id="ai-status"></small>
                 </div>
                 <div class="col-md-12 mb-3">
                     <label>Deadline</label>
@@ -74,3 +80,60 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.getElementById('btn-generate-ai').addEventListener('click', async function() {
+        const descriptionInput = document.getElementById('task-description');
+        const statusText = document.getElementById('ai-status');
+        const originalText = descriptionInput.value;
+
+        if (!originalText.trim()) {
+            alert('Mohon isi deskripsi terlebih dahulu sebelum diperbaiki oleh AI.');
+            return;
+        }
+
+        // Tampilkan loading state
+        this.disabled = true;
+        const originalBtnHtml = this.innerHTML;
+        this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Memproses...';
+        
+        statusText.innerText = 'AI sedang merangkai kalimat profesional...';
+        statusText.className = 'text-info d-block mt-1';
+
+        try {
+            const response = await fetch('{{ route('tasks.ai-description') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ description: originalText })
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                // Set text update
+                descriptionInput.value = result.data;
+                statusText.innerText = '✨ Deskripsi berhasil diperbaiki!';
+                statusText.className = 'text-success d-block mt-1 fw-bold';
+            } else {
+                alert(result.message || 'Terjadi kesalahan saat memproses data ke AI.');
+                statusText.innerText = 'Gagal memperbaiki deskripsi.';
+                statusText.className = 'text-danger d-block mt-1';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan koneksi atau server.');
+            statusText.innerText = 'Kesalahan sistem saat memanggil AI.';
+            statusText.className = 'text-danger d-block mt-1';
+        } finally {
+            // Restore button
+            this.disabled = false;
+            this.innerHTML = originalBtnHtml;
+        }
+    });
+</script>
+@endpush

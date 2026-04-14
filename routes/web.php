@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AIController;
 
 Route::get('/', function() {
     return redirect()->route('login');
@@ -20,6 +21,7 @@ Route::middleware('auth')->group(function () {
     
     // Tasks
     Route::get('/tasks/export', [TaskController::class, 'export'])->name('tasks.export');
+    Route::post('/tasks/ai-description', [AIController::class, 'generateProfessionalDescription'])->name('tasks.ai-description');
     Route::resource('tasks', TaskController::class);
     
     // Users
