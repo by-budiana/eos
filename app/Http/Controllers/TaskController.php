@@ -32,7 +32,7 @@ class TaskController extends Controller
             $query->where('status', $request->status);
         }
 
-        $tasks = $query->orderBy('created_at', 'desc')->paginate(10);
+        $tasks = $query->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
         return view('tasks.index', compact('tasks'));
     }
 
