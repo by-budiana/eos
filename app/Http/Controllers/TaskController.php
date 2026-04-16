@@ -20,8 +20,12 @@ class TaskController extends Controller
             $query->where('assigned_to', Auth::id());
         }
 
-        if ($request->filled('date')) {
-            $query->whereDate('date', $request->date);
+        if ($request->filled('start_date')) {
+            $query->where('date', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->where('date', '<=', $request->end_date);
         }
 
         if ($request->filled('status')) {
@@ -91,6 +95,6 @@ class TaskController extends Controller
     
     public function export(Request $request)
     {
-        return Excel::download(new TasksExport($request->date, $request->status, Auth::user()), 'tasks.xlsx');
+        return Excel::download(new TasksExport($request->start_date, $request->end_date, $request->status, Auth::user()), 'tasks.xlsx');
     }
 }

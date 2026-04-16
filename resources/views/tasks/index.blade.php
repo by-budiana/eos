@@ -17,10 +17,16 @@
         @endif
 
         <form action="{{ route('tasks.index') }}" method="GET" class="row g-3 mb-4">
-            <div class="col-md-3">
-                <input type="date" name="date" class="form-control" value="{{ request('date') }}" placeholder="Filter Date">
+            <div class="col-md-2">
+                <label class="form-label small">Start Date</label>
+                <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">End Date</label>
+                <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
             </div>
             <div class="col-md-3">
+                <label class="form-label small">Status</label>
                 <select name="status" class="form-control">
                     <option value="">-- All Status --</option>
                     <option value="Pending" {{ request('status') == 'Pending' ? 'selected' : '' }}>Pending</option>
@@ -28,10 +34,10 @@
                     <option value="Done" {{ request('status') == 'Done' ? 'selected' : '' }}>Done</option>
                 </select>
             </div>
-            <div class="col-md-3">
-                <button type="submit" class="btn btn-secondary">Filter</button>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-secondary w-100">Filter</button>
             </div>
-            <div class="col-md-3 text-end">
+            <div class="col-md-3 d-flex align-items-end justify-content-end">
                 <a href="{{ route('tasks.export', request()->all()) }}" class="btn btn-success"><i class="bi bi-file-earmark-excel"></i> Export Excel</a>
             </div>
         </form>

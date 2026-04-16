@@ -9,13 +9,15 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 
 class TasksExport implements FromCollection, WithHeadings, WithMapping
 {
-    protected $date;
+    protected $startDate;
+    protected $endDate;
     protected $status;
     protected $user;
 
-    public function __construct($date, $status, $user)
+    public function __construct($startDate, $endDate, $status, $user)
     {
-        $this->date = $date;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
         $this->status = $status;
         $this->user = $user;
     }
@@ -28,8 +30,12 @@ class TasksExport implements FromCollection, WithHeadings, WithMapping
             $query->where('assigned_to', $this->user->id);
         }
 
-        if (!empty($this->date)) {
-            $query->whereDate('date', $this->date);
+        if (!empty($this->startDate)) {
+            $query->where('date', '>=', $this->startDate);
+        }
+
+        if (!empty($this->endDate)) {
+            $query->where('date', '<=', $this->endDate);
         }
 
         if (!empty($this->status)) {
