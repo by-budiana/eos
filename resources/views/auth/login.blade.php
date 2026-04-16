@@ -19,7 +19,7 @@
                 <div id="auth-left" class="w-100 p-lg-5 p-4" style="max-width: 500px;">
                     <div class="auth-logo mb-5 text-center">
                         <a href="/">
-                             <div style="width: 220px; height: 70px; background-image: url('{{ asset('assets/images/logo.jpg') }}'); background-size: contain; background-position: center top; background-repeat: no-repeat; margin: 0 auto;"></div>
+                             <div style="width: 320px; height: 150px; background-image: url('{{ asset('assets/images/logo.png') }}'); background-size: contain; background-position: center top; background-repeat: no-repeat; margin: 0 auto;"></div>
                         </a>
                     </div>
                     <h1 class="auth-title h2 mb-2 text-center" style="font-weight: 800; color: #435ebe;">Welcome Back</h1>
@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="col-lg-6 d-none d-lg-block p-0">
-                <div id="auth-right" class="h-100" style="background-image: url('{{ asset('assets/images/bg/login-bg.png') }}'); background-size: cover; background-position: center; position: relative;">
+                <div id="auth-right" class="h-100" style="background-image: url('{{ asset('assets/images/bg/DSC00957.JPG') }}'); background-size: cover; background-position: center; position: relative;">
                     <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.4));"></div>
                 </div>
             </div>

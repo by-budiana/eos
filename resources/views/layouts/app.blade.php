@@ -25,7 +25,7 @@
                     <div class="d-flex justify-content-between">
                         <div class="logo">
                             <a href="{{ route('dashboard') }}">
-                                <div style="width: 160px; height: 50px; background-image: url('{{ asset('assets/images/logo.jpg') }}'); background-size: contain; background-position: center top; background-repeat: no-repeat;"></div>
+                                <div style="width: 270px; height: 100px; background-image: url('{{ asset('assets/images/logo.png') }}'); background-size: contain; background-position: center top; background-repeat: no-repeat;"></div>
                             </a>
                         </div>
                         <div class="toggler">
