@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EOS - Engineering On-Site Task Management</title>
+    <title>{{ config('app.name', 'EOS') }}</title>
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -24,7 +24,9 @@
                 <div class="sidebar-header">
                     <div class="d-flex justify-content-between">
                         <div class="logo">
-                            <a href="{{ route('dashboard') }}"><h2>EOS</h2></a>
+                            <a href="{{ route('dashboard') }}">
+                                <div style="width: 160px; height: 50px; background-image: url('{{ asset('assets/images/logo.jpg') }}'); background-size: contain; background-position: center top; background-repeat: no-repeat;"></div>
+                            </a>
                         </div>
                         <div class="toggler">
                             <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -106,7 +108,7 @@
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="float-start">
-                        <p>2026 &copy; EOS System</p>
+                        <p>{{ date('Y') }} &copy; {{ config('app.name') }}</p>
                     </div>
                 </div>
             </footer>
