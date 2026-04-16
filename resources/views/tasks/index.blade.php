@@ -12,18 +12,15 @@
         </div>
     </div>
     <div class="card-body">
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
 
         <form action="{{ route('tasks.index') }}" method="GET" class="row g-3 mb-4">
             <div class="col-md-2">
                 <label class="form-label small">Start Date</label>
-                <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}">
+                <input type="text" name="start_date" class="form-control flatpickr" value="{{ request('start_date') }}">
             </div>
             <div class="col-md-2">
                 <label class="form-label small">End Date</label>
-                <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
+                <input type="text" name="end_date" class="form-control flatpickr" value="{{ request('end_date') }}">
             </div>
             <div class="col-md-3">
                 <label class="form-label small">Status</label>
@@ -76,7 +73,7 @@
                             <td>{{ $task->user->name ?? 'Unassigned' }}</td>
                             <td>
                                 <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?')">
+                                <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="d-inline delete-form">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-danger">Delete</button>
@@ -95,3 +92,12 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    flatpickr(".flatpickr", {
+        dateFormat: "Y-m-d",
+        allowInput: true
+    });
+</script>
+@endpush

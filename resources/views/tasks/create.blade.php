@@ -41,10 +41,14 @@
                     <small class="text-muted d-block mt-1" id="ai-status"></small>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label>Deadline</label>
-                    <input type="date" name="deadline" class="form-control" value="{{ old('deadline') }}">
+                    <label>Task Date</label>
+                    <input type="text" name="date" class="form-control flatpickr" value="{{ old('date', date('Y-m-d')) }}" required>
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-6 mb-3">
+                    <label>Deadline</label>
+                    <input type="text" name="deadline" class="form-control flatpickr" value="{{ old('deadline') }}">
+                </div>
+                <div class="col-md-6 mb-3">
                     <label>Status</label>
                     <select name="status" class="form-control" required>
                         <option value="Pending" {{ old('status') == 'Pending' ? 'selected' : '' }}>Pending</option>
@@ -60,7 +64,7 @@
                         <option value="High" {{ old('priority') == 'High' ? 'selected' : '' }}>High</option>
                     </select>
                 </div>
-                <div class="col-md-6 mb-3">
+                <div class="col-md-12 mb-3">
                     <label>Assign To (Engineer)</label>
                     <select name="assigned_to" class="form-control">
                         <option value="">-- Unassigned --</option>
@@ -133,6 +137,12 @@
             this.disabled = false;
             this.innerHTML = originalBtnHtml;
         }
+    });
+
+    // Initialize Flatpickr
+    flatpickr(".flatpickr", {
+        dateFormat: "Y-m-d",
+        allowInput: true
     });
 </script>
 @endpush

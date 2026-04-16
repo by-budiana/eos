@@ -17,12 +17,12 @@
         <div class="row h-100">
             <div class="col-lg-6 col-12 d-flex align-items-center justify-content-center bg-white">
                 <div id="auth-left" class="w-100 p-lg-5 p-4" style="max-width: 500px;">
-                    <div class="auth-logo mb-5 text-center">
+                    <div class="auth-logo mb-2 text-center">
                         <a href="/">
                              <div style="width: 320px; height: 150px; background-image: url('{{ asset('assets/images/logo.png') }}'); background-size: contain; background-position: center top; background-repeat: no-repeat; margin: 0 auto;"></div>
                         </a>
                     </div>
-                    <h1 class="auth-title h2 mb-2 text-center" style="font-weight: 800; color: #435ebe;">Welcome Back</h1>
+                    <h1 class="auth-title h2 mb-2 text-center" style="font-weight: 800; color: #435ebe; line-height: 1.1;">Welcome</h1>
                     <p class="auth-subtitle mb-5 text-center text-muted" style="font-size: 1.1rem;">Please enter your credentials to access the system.</p>
 
                     <form action="{{ route('login') }}" method="POST">
@@ -36,14 +36,14 @@
                         <div class="form-group position-relative has-icon-left mb-4">
                             <label class="form-label text-muted small ms-1 mb-1">Email Address</label>
                             <input type="email" class="form-control form-control-xl border-0 bg-light" placeholder="email@ngoerahsun.com" name="email" value="{{ old('email') }}" required autofocus style="border-radius: 12px;">
-                            <div class="form-control-icon">
+                            <div class="form-control-icon mt-2">
                                 <i class="bi bi-envelope"></i>
                             </div>
                         </div>
                         <div class="form-group position-relative has-icon-left mb-4">
                             <label class="form-label text-muted small ms-1 mb-1">Password</label>
                             <input type="password" class="form-control form-control-xl border-0 bg-light" placeholder="Your password" name="password" required style="border-radius: 12px;">
-                            <div class="form-control-icon">
+                            <div class="form-control-icon mt-2">
                                 <i class="bi bi-lock"></i>
                             </div>
                         </div>

@@ -48,13 +48,12 @@ class TaskController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
+            'date' => 'required|date',
             'status' => 'required|in:Pending,On Progress,Done',
             'priority' => 'required|in:Low,Medium,High',
             'deadline' => 'nullable|date',
             'assigned_to' => 'nullable|exists:users,id',
         ]);
-        
-        $validated['date'] = date('Y-m-d');
         
         Task::create($validated);
         return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
@@ -77,6 +76,7 @@ class TaskController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
+            'date' => 'required|date',
             'status' => 'required|in:Pending,On Progress,Done',
             'priority' => 'required|in:Low,Medium,High',
             'deadline' => 'nullable|date',

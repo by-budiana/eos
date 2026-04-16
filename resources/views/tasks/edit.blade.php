@@ -41,9 +41,13 @@
                     <textarea name="description" id="task-description" class="form-control" rows="4" required>{{ old('description', $task->description) }}</textarea>
                     <small class="text-muted d-block mt-1" id="ai-status"></small>
                 </div>
-                <div class="col-md-12 mb-3">
+                <div class="col-md-6 mb-3">
+                    <label>Task Date</label>
+                    <input type="text" name="date" class="form-control flatpickr" value="{{ old('date', $task->date) }}" required>
+                </div>
+                <div class="col-md-6 mb-3">
                     <label>Deadline</label>
-                    <input type="date" name="deadline" class="form-control" value="{{ old('deadline', $task->deadline) }}">
+                    <input type="text" name="deadline" class="form-control flatpickr" value="{{ old('deadline', $task->deadline) }}">
                 </div>
                 <div class="col-md-4 mb-3">
                     <label>Status</label>
@@ -134,6 +138,12 @@
             this.disabled = false;
             this.innerHTML = originalBtnHtml;
         }
+    });
+
+    // Initialize Flatpickr
+    flatpickr(".flatpickr", {
+        dateFormat: "Y-m-d",
+        allowInput: true
     });
 </script>
 @endpush
