@@ -58,9 +58,7 @@
                         <button class="btn btn-primary btn-block btn-lg shadow-lg mt-2 py-3" style="border-radius: 12px; font-weight: bold; background: linear-gradient(135deg, #435ebe 0%, #5a8dee 100%); border: none;">Login to Dashboard</button>
                     </form>
                     
-                    {{-- <div class="text-center mt-5">
-                        <p class="text-gray-600">Don't have an account? <a href="{{ route('register') }}" class="font-bold text-primary">Sign up</a>.</p>
-                    </div> --}}
+
                 </div>
             </div>
             <div class="col-lg-6 d-none d-lg-block p-0">
