@@ -37,6 +37,28 @@ class DashboardController extends Controller
             
         $latestActivities = (clone $query)->orderBy('updated_at', 'desc')->take(5)->get();
 
+        // Absensi Logic
+        $user = auth()->user();
+        $attendanceToday = \App\Models\Attendance::where('user_id', $user->id)
+            ->where('date', $today)
+            ->first();
+
+        // Stats for Dashboard
+        $totalHadirHariIni = \App\Models\Attendance::where('date', $today)->count();
+        $belumCheckOut = \App\Models\Attendance::where('date', $today)->whereNull('check_out_time')->count();
+        
+        // Weekly Data for Graph
+        $weeklyData = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date = date('Y-m-d', strtotime("-$i days"));
+            $weeklyData['labels'][] = date('D, d M', strtotime($date));
+            $weeklyData['data'][] = \App\Models\Attendance::where('date', $date)->count();
+        }
+
+        // Presentase (Example logic: Assuming total users count)
+        $totalUsers = \App\Models\User::count();
+        $presentaseKehadiran = $totalUsers > 0 ? round(($totalHadirHariIni / $totalUsers) * 100) : 0;
+
         return view('dashboard', compact(
             'totalTasksToday',
             'completed',
@@ -44,7 +66,12 @@ class DashboardController extends Controller
             'onProgress',
             'progress',
             'overdue',
-            'latestActivities'
+            'latestActivities',
+            'attendanceToday', 
+            'totalHadirHariIni', 
+            'belumCheckOut', 
+            'weeklyData', 
+            'presentaseKehadiran'
         ));
     }
 }

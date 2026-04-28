@@ -53,6 +53,13 @@
                             </a>
                         </li>
 
+                        <li class="sidebar-item {{ request()->routeIs('attendances.history') ? 'active' : '' }}">
+                            <a href="{{ route('attendances.history') }}" class='sidebar-link'>
+                                <i class="bi bi-person-check-fill"></i>
+                                <span>Riwayat Absensi</span>
+                            </a>
+                        </li>
+
                         @if(auth()->user() && auth()->user()->role == 'admin')
                         <li class="sidebar-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
                             <a href="{{ route('users.index') }}" class='sidebar-link'>
