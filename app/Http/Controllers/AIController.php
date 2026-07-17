@@ -8,88 +8,96 @@ use Illuminate\Support\Facades\Http;
 class AIController extends Controller
 {
     /**
-     * Memperbaiki deskripsi task menjadi lebih profesional menggunakan Google Gemini API.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * Generate professional engineer description using Groq API
      */
     public function generateProfessionalDescription(Request $request)
     {
-        // 1. Validasi input
+        // Validasi input
         $request->validate([
             'description' => 'required|string'
         ]);
 
         $text = $request->description;
-        
-        // 2. Persiapkan prompt untuk AI dengan aturan ketat
-        $prompt = "Ubah kalimat berikut menjadi 1 deskripsi pekerjaan engineer yang profesional, formal, dan jelas dalam bahasa Indonesia.
+
+       $prompt = "Ubah kalimat berikut menjadi deskripsi pekerjaan yang profesional, formal, dan jelas dalam bahasa Indonesia.
 
 ATURAN:
-- Hanya berikan 1 kalimat saja
-- Jangan buat daftar atau opsi
-- Jangan gunakan bullet point
+- Jangan gunakan kata 'saya'
+- Jangan gunakan frasa 'sebagai engineer'
+- Jangan gunakan sudut pandang orang pertama
+- Langsung fokus pada aktivitas pekerjaan
+- Gunakan gaya bahasa profesional perusahaan
+- Hanya 1 kalimat
+- Jangan membuat daftar atau bullet point
 - Maksimal 1-2 kalimat
-- Fokus pada aktivitas pekerjaan
 
 Kalimat:
-" . $text;
+{$text}";
 
-        // 3. Ambil API Key dari config
-        $apiKey = trim(config('services.gemini.key'));
-        
+        // Ambil API Key dari config/services.php
+        $apiKey = trim(config('services.groq.key'));
+
         if (empty($apiKey)) {
             return response()->json([
                 'success' => false,
-                'message' => 'API Key Gemini (GEMINI_API_KEY) tidak ditemukan.'
+                'message' => 'API Key Groq tidak ditemukan.'
             ], 500);
         }
 
         try {
-            // 4. Request ke API Gemini menggunakan model 2.5-flash sesuai data user
+
+            // Endpoint resmi Groq
+            $url = 'https://api.groq.com/openai/v1/chat/completions';
+
+            // Request ke Groq
             $response = Http::withHeaders([
-                'Content-Type' => 'application/json',
-            ])->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}", [
-                'contents' => [
-                    [
-                        'parts' => [
-                            ['text' => $prompt]
-                        ]
-                    ]
-                ]
-            ]);
+    'Authorization' => "Bearer {$apiKey}",
+    'Content-Type' => 'application/json',
+])->post($url, [
+    'model' => 'llama-3.3-70b-versatile',
+    'messages' => [
+        [
+            'role' => 'user',
+            'content' => $prompt
+        ]
+    ],
+    'temperature' => 0.7,
+    'max_tokens' => 200
+]);
 
-            // 5. Tangani respons dari API
-            if ($response->successful()) {
-                $data = $response->json();
-                
-                // Parsing response dari Gemini
-                $generatedText = $data['candidates'][0]['content']['parts'][0]['text'] ?? null;
-
-                if ($generatedText) {
-                    return response()->json([
-                        'success' => true,
-                        'data' => trim($generatedText) 
-                    ]);
-                } else {
-                     return response()->json([
-                        'success' => false,
-                        'message' => 'Format respons dari Gemini tidak sesuai atau kosong.'
-                    ], 500);
-                }
+            // Jika gagal
+            if ($response->failed()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal dari Groq API',
+                    'error' => $response->body()
+                ], 500);
             }
 
-            // Jika API merespons dengan HTTP error (Gunakan 500 agar tidak rancu dengan route 404)
+            // Ambil hasil response
+            $result = $response->json();
+
+            $generatedText = $result['choices'][0]['message']['content'] ?? null;
+
+            if (!$generatedText) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Response AI kosong.'
+                ], 500);
+            }
+
+            // Success
             return response()->json([
-                'success' => false,
-                'message' => 'Gagal dari Gemini API: ' . $response->body()
-            ], 500);
+                'success' => true,
+                'data' => trim($generatedText)
+            ]);
 
         } catch (\Exception $e) {
-            // 6. Penanganan error catch-all
+
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan sistem: ' . $e->getMessage()
+                'message' => 'Terjadi kesalahan sistem',
+                'error' => $e->getMessage()
             ], 500);
         }
     }
